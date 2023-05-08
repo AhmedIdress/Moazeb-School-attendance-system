@@ -1,0 +1,3 @@
+abstract class CustomCalendarState{}
+class InitialCustomCalendarState extends CustomCalendarState{}
+class ShowDetailCustomCalendarState extends CustomCalendarState{}
