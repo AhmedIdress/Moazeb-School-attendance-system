@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ibn_khaldun/core/app_locale.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibn_khaldun/core/app_colors.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
-import 'package:ibn_khaldun/core/app_string.dart';
+import 'package:ibn_khaldun/parent_module/presentation/controllers/children_cubit/children_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/child_screen.dart';
 
 class ChildrenScreen extends StatelessWidget {
@@ -10,114 +11,165 @@ class ChildrenScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 3,
-      itemBuilder: (BuildContext context, int index) {
-        return InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ChildScreen(),
+    var cubit = BlocProvider.of<ChildrenCubit>(context);
+    return BlocConsumer<ChildrenCubit, ChildrenState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              CustomPaint(
+                size: Size(
+                    double.infinity, MediaQuery.of(context).size.height * 0.5),
+                painter: _HeaderWavesPainter(AppColors.primary),
               ),
-            );
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: AppSize.s10h,
-            ),
-            child: Card(
-              elevation: 6,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSize.s10w,
-                  vertical: AppSize.s10h,
+              Padding(
+                padding: EdgeInsets.only(
+                  top: AppSize.s150h,
+                  right: AppSize.s16w,
+                  left: AppSize.s16w,
                 ),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: AppRadius.r35,
-                      backgroundImage: AssetImage(AppPath.hima),
-                      /*
-                      child: Text(
-                        getLang(
-                          context,
-                          AppString.childName,
-                        ).substring(0, 1),
-                        style: TextStyle(fontSize: AppFont.f24,),
-                      ),*/
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: AppSize.s10h,
-                      ),
-                    ),
-                    Text(
-                      getLang(
-                        context,
-                        AppString.childName,
-                      ),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    /*CustomText(
-                      text: getLang(
-                        context,
-                        AppString.childName,
-                      ),
-                      fontSize: AppFont.f16,
-                      fontWeight: FontWeight.bold,
-                    ),*/
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: AppSize.s10h,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          getLang(
-                            context,
-                            AppString.level,
+                child: ListView.builder(
+                  itemCount: cubit.loginData.students?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ChildScreen(),
                           ),
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppSize.s10h,
                         ),
-                        /*CustomText(
-                          text: getLang(
-                            context,
-                            AppString.level,
-                          ),
-                          fontSize: AppFont.f16,
-                          fontWeight: FontWeight.normal,
-                        ),*/
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSize.s14w,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return const ChildScreen();
+                              }),
+                            );
+                          },
+                          child: SizedBox(
+                            height: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  PositionedDirectional(
+                                    top: AppSize.s16h,
+                                    end: -AppSize.s25h,
+                                    child: CustomPaint(
+                                      painter: PathPainter(
+                                        AppColors.primaryBright,
+                                      ),
+                                      size: const Size(200, 200),
+                                    ),
+                                  ),
+                                  PositionedDirectional(
+                                    bottom: -220,
+                                    start: -120,
+                                    child: CustomPaint(
+                                      painter: PathPainter(
+                                        AppColors.primaryBright,
+                                      ),
+                                      size: const Size(200, 200),
+                                    ),
+                                  ),
+                                  PositionedDirectional(
+                                    start: AppSize.s72w,
+                                    bottom: AppSize.s35h,
+                                    child: Text(
+                                      cubit.loginData.students![index].name,
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  ),
+                                  PositionedDirectional(
+                                    end: AppSize.s35w,
+                                    top: AppSize.s30h,
+                                    child: CircleAvatar(
+                                      radius: AppRadius.r30,
+                                      backgroundImage: AssetImage(AppPath.hima),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        /*CustomText(
-                          text: getLang(
-                            context,
-                            AppString.childClass,
-                          ),
-                          fontSize: AppFont.f16,
-                          fontWeight: FontWeight.normal,
-                        ),*/
-                        Text(
-                          getLang(
-                            context,
-                            AppString.childClass,
-                          ),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
+              PositionedDirectional(
+                end: AppSize.s35w,
+                top: AppSize.s60h,
+                child: CircleAvatar(
+                  radius: AppRadius.r35,
+                  backgroundImage: AssetImage(AppPath.prof2),
+                ),
+              ),
+              PositionedDirectional(
+                start: AppSize.s20w,
+                top: AppSize.s60h,
+                child: Text(
+                  'Your children are',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
           ),
         );
       },
     );
+  }
+}
+
+class _HeaderWavesPainter extends CustomPainter {
+  _HeaderWavesPainter(this.color);
+  Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint();
+
+    paint.color = color;
+    paint.style = PaintingStyle.fill;
+    paint.strokeWidth = 2.0;
+
+    final path = Path();
+
+    path.lineTo(0, size.height * 0.35);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.40,
+        size.width * 0.5, size.height * 0.30);
+    path.quadraticBezierTo(
+        size.width * 0.75, size.height * 0.20, size.width, size.height * 0.30);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

@@ -22,14 +22,17 @@ class AppSize {
   static double s30w = 30.w;
   static double s35h = 35.h;
   static double s35w = 35.w;
+  static double s42w = 42.w;
   static double s42h = 42.h;
   static double s48h = 48.h;
-  static double s42w = 82.w;
+  static double s82w = 82.w;
+  static double s72w = 72.w;
   static double s60h = 60.h;
   static double s60w = 60.w;
   static double s90h = 90.h;
   static double s90w = 90.w;
   static double s120h = 120.h;
+  static double s150h = 150.h;
   static double s120w = 120.w;
 }
 
@@ -56,5 +59,6 @@ class AppRadius {
   static double r35 = 35.r;
   static double r40 = 40.r;
   static double r50 = 50.r;
+  static double r80 = 80.r;
   static double r250 = 250.r;
 }

@@ -10,13 +10,13 @@ import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/services/dio_helper.dart';
 import 'package:ibn_khaldun/core/theme.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/child_cubit/child_cubit.dart';
+import 'package:ibn_khaldun/parent_module/presentation/controllers/children_cubit/children_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/custom_calender_cubit/custom_calender_cubit.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('cacheData');
   DioHelper.init();
-  //HiveDataSource.instance.init();
   runApp(const MyApp());
 }
 
@@ -38,6 +38,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (BuildContext context) => ChildCubit(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => ChildrenCubit(),
         ),
       ],
       child: ScreenUtilInit(

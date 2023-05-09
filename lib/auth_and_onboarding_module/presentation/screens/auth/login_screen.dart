@@ -10,10 +10,19 @@ import 'package:ibn_khaldun/core/component/text_box.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/children_screen.dart';
 import 'package:translator/translator.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   @override
@@ -98,6 +107,16 @@ class LoginScreen extends StatelessWidget {
                   }
                 },
                 text: getLang(context, 'login'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const ChildrenScreen(),
+                    ),
+                  );
+                },
+                child: const Text('demo access'),
               ),
             ],
           ),

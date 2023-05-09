@@ -185,15 +185,6 @@ class ChildScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          /*Padding(
-                        padding: EdgeInsets.only(
-                          bottom: AppSize.s10h,
-                        ),
-                        child: Text(
-                          'Schedule',
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                      ),*/
                           Expanded(
                             child: ListView.separated(
                               itemBuilder: (BuildContext context, int index) {
@@ -201,13 +192,6 @@ class ChildScreen extends StatelessWidget {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                        /*if (index == 0) {
-                                      return const CalenderScreen();
-                                    } else if (index == 1) {
-                                      return const AttendanceCalender();
-                                    } else {
-                                      return const StudySchedule();
-                                    }*/
                                         return const StudySchedule();
                                       }),
                                     );
