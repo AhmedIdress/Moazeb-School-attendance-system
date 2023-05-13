@@ -13,8 +13,8 @@ class ChildrenCubit extends Cubit<ChildrenState> {
   final BaseParentRepository _baseParentRepository = ParentRepository();
   late LoginData loginData;
   void getLoginData() async {
-    //loginData = await _baseParentRepository.getParentLoinData();
-    loginData = LoginData.fromJson({
+    loginData = await _baseParentRepository.getParentLoinData();
+    /*loginData = LoginData.fromJson({
       "parentId": "d5ab7448-ae16-4987-876f-d9ed14a0c90a",
       "parentName": "Ibrahim Idress",
       "email": "ibrahimidress@parent.ibnkhaldun",
@@ -32,6 +32,7 @@ class ChildrenCubit extends Cubit<ChildrenState> {
         {"name": "Mohamed", "studentId": "cd5b87c4-cb53-41d0-a0f8-2f25b1de5cd7"}
       ]
     });
+    */
     emit(GetLoginDataSuccessfullyState());
   }
 }

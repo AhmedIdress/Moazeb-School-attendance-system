@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen>
                 },
                 text: getLang(context, 'login'),
               ),
-              ElevatedButton(
+              /*ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen>
                   );
                 },
                 child: const Text('demo access'),
-              ),
+              ),*/
             ],
           ),
         );

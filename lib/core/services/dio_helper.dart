@@ -39,8 +39,8 @@ class DioHelper {
         onReceiveProgress: onReceiveProgress,
       );
       return response;
-    } catch (e) {
-      rethrow;
+    } on DioError catch (e) {
+      throw Exception(e.message);
     }
   }
 

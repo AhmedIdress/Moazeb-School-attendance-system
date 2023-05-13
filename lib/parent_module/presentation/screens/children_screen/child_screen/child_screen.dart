@@ -1,329 +1,361 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
-import 'package:ibn_khaldun/core/app_string.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/child_cubit/child_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/calender_screen.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/study_schedule.dart';
 
 class ChildScreen extends StatelessWidget {
-  const ChildScreen({Key? key}) : super(key: key);
-
+  const ChildScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ChildCubit>(context);
+    cubit.init(id);
     return BlocConsumer<ChildCubit, ChildState>(
       listener: (context, state) {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return Scaffold(
-          backgroundColor: const Color.fromRGBO(0, 102, 79, 1),
-          body: SafeArea(
-            child: Stack(
-              alignment: AlignmentDirectional.topEnd,
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.bottomStart,
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * .65,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(
-                          AppRadius.r35,
+        if (/*state is ChildReInitialState ||*/
+            state is GetDataSuccessfullyState) {
+          return Scaffold(
+            backgroundColor: const Color.fromRGBO(0, 102, 79, 1),
+            body: SafeArea(
+              child: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.bottomStart,
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * .65,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                            AppRadius.r35,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSize.s16w,
-                        vertical: AppSize.s16h,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  Text(
-                                    'Attendance',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  ),
-                                  Text(
-                                    'Student attendance in semester',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                          color: Colors.grey,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CalenderScreen(),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSize.s16w,
+                          vertical: AppSize.s16h,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    Text(
+                                      'Attendance',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  'Details',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        color: const Color.fromRGBO(
-                                          176,
-                                          221,
-                                          201,
-                                          1,
-                                        ),
-                                        fontSize: AppFont.f18,
-                                      ),
+                                    Text(
+                                      'Student attendance in semester',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                            color: Colors.grey,
+                                          ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: AppSize.s16h,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => CalenderScreen(
+                                          id: id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Details',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(
+                                          color: const Color.fromRGBO(
+                                            176,
+                                            221,
+                                            201,
+                                            1,
+                                          ),
+                                          fontSize: AppFont.f18,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: SizedBox(
-                              height: 150,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: cubit.cards.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .5,
-                                          decoration: BoxDecoration(
-                                            color: cubit
-                                                .cards[index].backgroundColor,
-                                          ),
-                                        ),
-                                        PositionedDirectional(
-                                          top: 0,
-                                          end: -AppSize.s35w,
-                                          child: CustomPaint(
-                                            painter: PathPainter(
-                                              cubit.cards[index].maskColor,
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: AppSize.s16h,
+                              ),
+                              child: SizedBox(
+                                height: 150,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: cubit.cards.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .5,
+                                            decoration: BoxDecoration(
+                                              color: cubit
+                                                  .cards[index].backgroundColor,
                                             ),
-                                            size: const Size(200, 200),
                                           ),
-                                        ),
-                                        PositionedDirectional(
-                                          top: AppSize.s30h,
-                                          start: AppSize.s16w,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                  bottom: AppSize.s10h,
+                                          PositionedDirectional(
+                                            top: 0,
+                                            end: -AppSize.s35w,
+                                            child: CustomPaint(
+                                              painter: PathPainter(
+                                                cubit.cards[index].maskColor,
+                                              ),
+                                              size: const Size(200, 200),
+                                            ),
+                                          ),
+                                          PositionedDirectional(
+                                            top: AppSize.s30h,
+                                            start: AppSize.s16w,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    bottom: AppSize.s10h,
+                                                  ),
+                                                  child: Text(
+                                                    cubit.cards[index].days
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleLarge
+                                                        ?.copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                  ),
                                                 ),
-                                                child: Text(
-                                                  '25',
+                                                Text(
+                                                  cubit.cards[index].state,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .titleLarge
+                                                      .titleMedium
                                                       ?.copyWith(
                                                         color: Colors.white,
                                                       ),
                                                 ),
+                                              ],
+                                            ),
+                                          ),
+                                          PositionedDirectional(
+                                            top: AppSize.s16h,
+                                            end: AppSize.s16w,
+                                            child: SvgPicture.asset(
+                                              cubit.cards[index].icon,
+                                              height: AppSize.s30h,
+                                              width: AppSize.s30w,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      width: AppSize.s10w,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.separated(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                          return const StudySchedule();
+                                        }),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      height: 150,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: cubit
+                                                    .schedule.backgroundColor,
                                               ),
-                                              Text(
-                                                cubit.cards[index].state,
+                                            ),
+                                            PositionedDirectional(
+                                              top: AppSize.s16h,
+                                              end: -AppSize.s25h,
+                                              child: CustomPaint(
+                                                painter: PathPainter(
+                                                  cubit.schedule.maskColor,
+                                                ),
+                                                size: const Size(200, 200),
+                                              ),
+                                            ),
+                                            PositionedDirectional(
+                                              start: AppSize.s35w,
+                                              top: AppSize.s35h,
+                                              child: Text(
+                                                cubit.schedule.state,
+                                                textAlign: TextAlign.center,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .titleMedium
+                                                    .titleLarge
                                                     ?.copyWith(
                                                       color: Colors.white,
                                                     ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            PositionedDirectional(
+                                              top: AppSize.s20h,
+                                              end: AppSize.s25w,
+                                              child: SvgPicture.asset(
+                                                cubit.schedule.icon,
+                                                width: AppSize.s30w,
+                                                height: AppSize.s30h,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        PositionedDirectional(
-                                          top: AppSize.s16h,
-                                          end: AppSize.s16w,
-                                          child: SvgPicture.asset(
-                                            cubit.cards[index].icon,
-                                            height: AppSize.s30h,
-                                            width: AppSize.s30w,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   );
                                 },
                                 separatorBuilder:
                                     (BuildContext context, int index) {
                                   return SizedBox(
-                                    width: AppSize.s10w,
+                                    height: AppSize.s10h,
                                   );
                                 },
+                                itemCount: 1,
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: ListView.separated(
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                        return const StudySchedule();
-                                      }),
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    height: 150,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: cubit
-                                                  .schedule.backgroundColor,
-                                            ),
-                                          ),
-                                          PositionedDirectional(
-                                            top: AppSize.s16h,
-                                            end: -AppSize.s25h,
-                                            child: CustomPaint(
-                                              painter: PathPainter(
-                                                cubit.schedule.maskColor,
-                                              ),
-                                              size: const Size(200, 200),
-                                            ),
-                                          ),
-                                          PositionedDirectional(
-                                            start: AppSize.s35w,
-                                            top: AppSize.s35h,
-                                            child: Text(
-                                              cubit.schedule.state,
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge
-                                                  ?.copyWith(
-                                                    color: Colors.white,
-                                                  ),
-                                            ),
-                                          ),
-                                          PositionedDirectional(
-                                            top: AppSize.s20h,
-                                            end: AppSize.s25w,
-                                            child: SvgPicture.asset(
-                                              cubit.schedule.icon,
-                                              width: AppSize.s30w,
-                                              height: AppSize.s30h,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return SizedBox(
-                                  height: AppSize.s10h,
-                                );
-                              },
-                              itemCount: 1,
+                            InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Icon(Icons.arrow_back)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  PositionedDirectional(
+                    bottom: MediaQuery.of(context).size.height * 0.62,
+                    child: SvgPicture.asset(
+                      AppPath.bookIcon,
+                    ),
+                  ),
+                  PositionedDirectional(
+                    start: AppSize.s16w,
+                    top: AppSize.s16h,
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: AppSize.s60w,
+                            height: AppSize.s60h,
+                            decoration: BoxDecoration(
+                              image: /*cubit.studentModel.data?.imageUrl == null
+                                  ?*/
+                                  DecorationImage(
+                                image: AssetImage(
+                                  AppPath.hima,
+                                ),
+                              )
+                              //todo: remove
+                              /*
+                               : DecorationImage(
+                                      image: NetworkImage(
+                                          '$imageHost${cubit.studentModel.data?.imageUrl}' ??
+                                              ''),
+                                    )*/
+                              ,
+                              shape: BoxShape.circle,
                             ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppSize.s10h,
+                            ),
+                            child: Text(
+                              cubit.studentModel.data?.name ?? '',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          ),
+                          Text(
+                            "Level ${cubit.studentModel.data?.grade}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                          Text(
+                            'class ${cubit.studentModel.data?.className}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                PositionedDirectional(
-                  bottom: MediaQuery.of(context).size.height * 0.62,
-                  child: SvgPicture.asset(
-                    AppPath.bookIcon,
-                  ),
-                ),
-                PositionedDirectional(
-                  start: AppSize.s16w,
-                  top: AppSize.s16h,
-                  child: SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: AppSize.s60w,
-                          height: AppSize.s60h,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                AppPath.hima,
-                              ),
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSize.s10h,
-                          ),
-                          child: Text(
-                            /*'${getLang(context,AppString.welcome)}'
-                            '\n'*/
-                            getLang(context, AppString.userName),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                        ),
-                        Text(
-                          'level 5',
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    color: Colors.white,
-                                  ),
-                        ),
-                        Text(
-                          'class 5A',
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    color: Colors.white,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
       },
     );
   }

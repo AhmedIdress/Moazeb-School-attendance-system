@@ -1,4 +1,4 @@
-import 'package:ibn_khaldun/auth_and_onboarding_module/data/data_source/remote_data_source/remote_data_source.dart';
+import 'package:ibn_khaldun/auth_and_onboarding_module/data/data_source/remote_data_source/auth_remote_data_source.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/data/models/login_model.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/domain/repository/base_auth_repository.dart';
 

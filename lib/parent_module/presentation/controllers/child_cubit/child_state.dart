@@ -4,3 +4,20 @@ part of 'child_cubit.dart';
 abstract class ChildState {}
 
 class ChildInitialState extends ChildState {}
+
+class ChildReInitialState extends ChildState {}
+
+//class GetStudentDataState extends ChildState {}
+
+class GetStudentDataFailedState extends ChildState {
+  GetStudentDataFailedState(this.message);
+  final String message;
+}
+
+//class GetSemiAttendanceState extends ChildState {}
+class GetDataSuccessfullyState extends ChildState {}
+
+class GetSemiAttendanceFailedState extends ChildState {
+  GetSemiAttendanceFailedState(this.message);
+  final String message;
+}

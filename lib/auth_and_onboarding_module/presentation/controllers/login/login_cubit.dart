@@ -13,10 +13,12 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       var login = await _baseAuthRepository.login(email, password);
       if (login.succeeded) {
-        HiveDataSource.instance
-            .set<String>(AppLocalDataKeys.token, login.token);
-        HiveDataSource.instance
-            .set<Map>(AppLocalDataKeys.parent, login.data?.toJson() ?? {});
+        HiveDataSource hiveMap =
+            HiveDataSource<Map<String, dynamic>>(AppLocalDataKeys.cacheBoxName);
+        HiveDataSource hiveString =
+            HiveDataSource<String>(AppLocalDataKeys.cacheBoxName);
+        hiveString.set(AppLocalDataKeys.token, login.token);
+        hiveMap.set(AppLocalDataKeys.parent, login.data?.toJson() ?? {});
         emit(LoginSuccessfullyState(login.message));
       } else {
         emit(

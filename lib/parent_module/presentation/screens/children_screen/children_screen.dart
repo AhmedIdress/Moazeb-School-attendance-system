@@ -17,43 +17,38 @@ class ChildrenScreen extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Stack(
-            children: [
-              CustomPaint(
-                size: Size(
-                    double.infinity, MediaQuery.of(context).size.height * 0.5),
-                painter: _HeaderWavesPainter(AppColors.primary),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: AppSize.s150h,
-                  right: AppSize.s16w,
-                  left: AppSize.s16w,
+        if (state is GetLoginDataSuccessfullyState) {
+          return Scaffold(
+            body: Stack(
+              children: [
+                CustomPaint(
+                  size: Size(double.infinity,
+                      MediaQuery.of(context).size.height * 0.5),
+                  painter: _HeaderWavesPainter(AppColors.primary),
                 ),
-                child: ListView.builder(
-                  itemCount: cubit.loginData.students?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ChildScreen(),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: AppSize.s150h,
+                    right: AppSize.s16w,
+                    left: AppSize.s16w,
+                  ),
+                  child: ListView.builder(
+                    itemCount: cubit.loginData.students?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChildScreen(
+                                id: cubit.loginData.students![index].studentId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSize.s10h,
                           ),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: AppSize.s10h,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return const ChildScreen();
-                              }),
-                            );
-                          },
                           child: SizedBox(
                             height: 150,
                             child: ClipRRect(
@@ -112,33 +107,36 @@ class ChildrenScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              PositionedDirectional(
-                end: AppSize.s35w,
-                top: AppSize.s60h,
-                child: CircleAvatar(
-                  radius: AppRadius.r35,
-                  backgroundImage: AssetImage(AppPath.prof2),
+                PositionedDirectional(
+                  end: AppSize.s35w,
+                  top: AppSize.s60h,
+                  child: CircleAvatar(
+                    radius: AppRadius.r35,
+                    backgroundImage: AssetImage(AppPath.prof2),
+                  ),
                 ),
-              ),
-              PositionedDirectional(
-                start: AppSize.s20w,
-                top: AppSize.s60h,
-                child: Text(
-                  'Your children are',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                      ),
+                PositionedDirectional(
+                  start: AppSize.s20w,
+                  top: AppSize.s60h,
+                  child: Text(
+                    'Your children are',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        } else {
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
+        }
       },
     );
   }

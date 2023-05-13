@@ -1,17 +1,18 @@
 import 'package:hive/hive.dart';
 
-class HiveDataSource {
-  static HiveDataSource get instance => HiveDataSource();
-  final Box _box = Hive.box('cacheData');
-  /*void init() async {
-    await Hive.openBox('cacheData');
-  }*/
+class HiveDataSource<T> {
+  //static HiveDataSource get instance => HiveDataSource();
+  HiveDataSource(String boxName) {
+    _box = Hive.box(boxName);
+  }
 
-  void set<T>(String key, T value) async {
+  late Box _box;
+
+  void set(String key, T value) async {
     _box.put(key, value);
   }
 
-  dynamic get(
+  T get(
     String key,
   ) {
     return _box.get(key);
