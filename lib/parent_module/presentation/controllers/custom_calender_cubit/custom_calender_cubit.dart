@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/parent_module/data/models/day_state_model.dart';
-import 'package:ibn_khaldun/parent_module/data/models/month_attendace_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/month_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/semi_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/parent_repository/parent_repository.dart';
 import 'package:ibn_khaldun/parent_module/domain/base_parent_repository/base_parent_repository.dart';
@@ -23,15 +23,6 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
     Colors.red,
     Color.fromRGBO(0, 102, 79, 1),
     Colors.blueGrey,
-  ];
-  final List<String> weekDays = const [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
   ];
   final List<String> days = const [
     'Day of absent',

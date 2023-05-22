@@ -1,13 +1,16 @@
 import 'package:ibn_khaldun/core/constants.dart';
 import 'package:ibn_khaldun/core/services/dio_helper.dart';
-import 'package:ibn_khaldun/parent_module/data/models/month_attendace_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/month_attendance_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/period_time_mdel.dart';
 import 'package:ibn_khaldun/parent_module/data/models/semi_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/student_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/student_schedule_model.dart';
 
 abstract class BaseParentRemoteDataSource {
   Future<SemiAttendanceModel> getStudentAttendanceSemester(String id);
   Future<MonthAttendanceModel> getStudentAttendanceMonth(String id, int month);
-  Future getStudentSchedule(String id);
+  Future<StudentScheduleModel> getStudentSchedule(String className);
+  Future<PeriodTimeModel> getSchedulePeriod();
   Future<StudentModel> getStudentData(String id, String token);
 }
 
@@ -38,9 +41,16 @@ class ParentRemoteDataSource extends BaseParentRemoteDataSource {
   }
 
   @override
-  Future getStudentSchedule(String id) async {
-    // TODO: implement getStudentSchedule
-    throw UnimplementedError();
+  Future<StudentScheduleModel> getStudentSchedule(String className) async {
+    var response = await DioHelper.getData(
+      url: AppEndPoint.getStudentSchedule + className,
+    );
+    if (response.statusCode == 200) {
+      print(response.data);
+      return StudentScheduleModel.fromJson(response.data);
+    } else {
+      throw Exception('response error');
+    }
   }
 
   @override
@@ -52,6 +62,19 @@ class ParentRemoteDataSource extends BaseParentRemoteDataSource {
     if (response.statusCode == 200) {
       print(response.data);
       return StudentModel.fromJson(response.data);
+    } else {
+      throw Exception('response error');
+    }
+  }
+
+  @override
+  Future<PeriodTimeModel> getSchedulePeriod() async {
+    var response = await DioHelper.getData(
+      url: AppEndPoint.getTimes,
+    );
+    if (response.statusCode == 200) {
+      print(response.data);
+      return PeriodTimeModel.fromJson(response.data);
     } else {
       throw Exception('response error');
     }

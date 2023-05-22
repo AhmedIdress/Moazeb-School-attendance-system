@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
-import 'package:ibn_khaldun/core/extentions__helper.dart';
+import 'package:ibn_khaldun/core/constants.dart';
+import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/custom_calender_cubit/custom_calender_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/custom_calender_cubit/custom_calender_state.dart';
 
@@ -152,7 +153,7 @@ class CalenderScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: cubit.weekDays
+                                    children: weekDays
                                         .map(
                                           (e) => Expanded(
                                             child: Center(

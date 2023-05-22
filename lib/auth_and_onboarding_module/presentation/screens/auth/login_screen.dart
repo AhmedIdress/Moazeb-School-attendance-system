@@ -7,7 +7,9 @@ import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/component/custom_button.dart';
 import 'package:ibn_khaldun/core/component/password_box.dart';
 import 'package:ibn_khaldun/core/component/text_box.dart';
+import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/children_screen.dart';
+import 'package:ibn_khaldun/teacher_module/presentation/screens/classes/class_screen.dart';
 import 'package:translator/translator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -69,11 +71,11 @@ class _LoginScreenState extends State<LoginScreen>
           }
         }
         if (state is LoginSuccessfullyState) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const ChildrenScreen(),
-            ),
-          );
+          if (state.isParent) {
+            context.pushReplacement(const ChildrenScreen());
+          } else {
+            context.pushReplacement(const ClassesScreen());
+          }
         }
       },
       builder: (context, state) {

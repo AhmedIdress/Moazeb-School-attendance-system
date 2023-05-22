@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/data/models/login_model.dart';
 import 'package:ibn_khaldun/parent_module/data/parent_repository/parent_repository.dart';
 import 'package:ibn_khaldun/parent_module/domain/base_parent_repository/base_parent_repository.dart';
@@ -10,8 +10,10 @@ class ChildrenCubit extends Cubit<ChildrenState> {
   ChildrenCubit() : super(ChildrenInitialState()) {
     getLoginData();
   }
+
   final BaseParentRepository _baseParentRepository = ParentRepository();
   late LoginData loginData;
+
   void getLoginData() async {
     loginData = await _baseParentRepository.getParentLoinData();
     /*loginData = LoginData.fromJson({

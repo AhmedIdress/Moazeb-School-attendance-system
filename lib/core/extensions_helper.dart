@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 extension MedieaHelper on BuildContext {
   double get screenHeight => MediaQuery.of(this).size.height;
+
   double get screenWidth => MediaQuery.of(this).size.width;
 }
 
@@ -18,7 +19,7 @@ extension NavigationHelper on BuildContext {
     );
   }
 
-  void pop(Widget widget) {
+  void pop() {
     Navigator.of(this).pop();
   }
 }

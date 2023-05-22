@@ -1,9 +1,11 @@
 import 'package:ibn_khaldun/auth_and_onboarding_module/data/data_source/local_data_source/hive_data_source.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/data/models/login_model.dart';
 import 'package:ibn_khaldun/core/constants.dart';
-import 'package:ibn_khaldun/parent_module/data/models/month_attendace_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/month_attendance_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/period_time_mdel.dart';
 import 'package:ibn_khaldun/parent_module/data/models/semi_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/student_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/student_schedule_model.dart';
 import 'package:ibn_khaldun/parent_module/data/remote_data_source/parent_remote_data_source.dart';
 import 'package:ibn_khaldun/parent_module/domain/base_parent_repository/base_parent_repository.dart';
 
@@ -26,12 +28,6 @@ class ParentRepository extends BaseParentRepository {
   }
 
   @override
-  Future getStudentSchedule(String id) async {
-    // TODO: implement getStudentSchedule
-    throw UnimplementedError();
-  }
-
-  @override
   Future<LoginData> getParentLoinData() async {
     HiveDataSource hive =
         HiveDataSource<Map<String, dynamic>>(AppLocalDataKeys.cacheBoxName);
@@ -46,5 +42,15 @@ class ParentRepository extends BaseParentRepository {
     String token = hive.get(AppLocalDataKeys.token);
     var data = await _baseParentRemoteDataSource.getStudentData(id, token);
     return data;
+  }
+
+  @override
+  Future<PeriodTimeModel> getSchedulePeriod() async {
+    return await _baseParentRemoteDataSource.getSchedulePeriod();
+  }
+
+  @override
+  Future<StudentScheduleModel> getStudentSchedule(String className) async {
+    return await _baseParentRemoteDataSource.getStudentSchedule(className);
   }
 }

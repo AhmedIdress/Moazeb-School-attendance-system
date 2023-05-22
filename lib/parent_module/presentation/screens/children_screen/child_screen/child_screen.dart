@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
+import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/child_cubit/child_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/calender_screen.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/study_schedule.dart';
@@ -13,6 +14,7 @@ class ChildScreen extends StatelessWidget {
     required this.id,
   }) : super(key: key);
   final String id;
+
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ChildCubit>(context);
@@ -198,11 +200,11 @@ class ChildScreen extends StatelessWidget {
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                          return const StudySchedule();
-                                        }),
-                                      );
+                                      context.push(StudySchedule(
+                                        className: cubit
+                                                .studentModel.data?.className ??
+                                            '',
+                                      ));
                                     },
                                     child: SizedBox(
                                       height: 150,
@@ -265,10 +267,24 @@ class ChildScreen extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Icon(Icons.arrow_back)),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'back',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: const Color.fromRGBO(
+                                        176,
+                                        221,
+                                        201,
+                                        1,
+                                      ),
+                                    ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -363,7 +379,9 @@ class ChildScreen extends StatelessWidget {
 
 class PathPainter extends CustomPainter {
   PathPainter(this.color);
+
   Color color;
+
   @override
   void paint(Canvas canvas, Size size) {
     var path = Path();

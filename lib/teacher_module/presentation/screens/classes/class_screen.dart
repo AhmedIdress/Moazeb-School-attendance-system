@@ -3,25 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
-import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/children_cubit/children_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/child_screen.dart';
-import 'package:ibn_khaldun/parent_module/presentation/screens/profile_screen.dart';
+import 'package:ibn_khaldun/teacher_module/presentation/controllers/classes_cubit/classes_cubit.dart';
 
-class ChildrenScreen extends StatefulWidget {
-  const ChildrenScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ChildrenScreen> createState() => _ChildrenScreenState();
-}
-
-class _ChildrenScreenState extends State<ChildrenScreen> {
-  PersistentBottomSheetController? _controller;
+class ClassesScreen extends StatelessWidget {
+  const ClassesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<ChildrenCubit>(context);
-    return BlocConsumer<ChildrenCubit, ChildrenState>(
+    var cubit = BlocProvider.of<ClassesCubit>(context);
+    return BlocConsumer<ClassesCubit, ClassesState>(
       listener: (context, state) {
         // TODO: implement listener
       },
@@ -42,14 +34,15 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                     left: AppSize.s16w,
                   ),
                   child: ListView.builder(
-                    itemCount: cubit.loginData.students?.length,
+                    itemCount: /*cubit.loginData.students?.length*/ 3,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ChildScreen(
-                                id: cubit.loginData.students![index].studentId,
+                                id: /*cubit.loginData.students![index].studentId*/
+                                    '',
                               ),
                             ),
                           );
@@ -93,7 +86,8 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                                     start: AppSize.s72w,
                                     bottom: AppSize.s35h,
                                     child: Text(
-                                      cubit.loginData.students![index].name,
+                                      /*cubit.loginData.students![index].name*/
+                                      '',
                                       textAlign: TextAlign.center,
                                       style: Theme.of(context)
                                           .textTheme
@@ -123,27 +117,9 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                 PositionedDirectional(
                   end: AppSize.s35w,
                   top: AppSize.s60h,
-                  child: Builder(
-                    builder: (BuildContext context) => InkWell(
-                      onTap: () {
-                        if (_controller != null) {
-                          _controller?.close();
-                          _controller = null;
-                        } else {
-                          _controller = Scaffold.of(context).showBottomSheet(
-                            (context) => SizedBox(
-                              height: context.screenHeight * 0.8,
-                              width: double.infinity,
-                              child: const ProfileScreen(),
-                            ),
-                          );
-                        }
-                      },
-                      child: CircleAvatar(
-                        radius: AppRadius.r35,
-                        backgroundImage: AssetImage(AppPath.prof2),
-                      ),
-                    ),
+                  child: CircleAvatar(
+                    radius: AppRadius.r35,
+                    backgroundImage: AssetImage(AppPath.prof2),
                   ),
                 ),
                 PositionedDirectional(
@@ -161,8 +137,7 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
             ),
           );
         } else {
-          return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(body: Center(child: Text('Teacher')));
         }
       },
     );
