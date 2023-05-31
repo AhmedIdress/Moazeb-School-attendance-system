@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
+import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
@@ -26,13 +27,13 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
         // TODO: implement listener
       },
       builder: (context, state) {
+        String lang = Localizations.localeOf(context).languageCode;
         if (state is GetLoginDataSuccessfullyState) {
           return Scaffold(
             body: Stack(
               children: [
                 CustomPaint(
-                  size: Size(double.infinity,
-                      MediaQuery.of(context).size.height * 0.5),
+                  size: Size(double.infinity, context.screenHeight * 0.5),
                   painter: _HeaderWavesPainter(AppColors.primary),
                 ),
                 Padding(
@@ -46,11 +47,9 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChildScreen(
-                                id: cubit.loginData.students![index].studentId,
-                              ),
+                          context.push(
+                            ChildScreen(
+                              id: cubit.loginData.students![index].studentId,
                             ),
                           );
                         },
@@ -71,26 +70,29 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                                   ),
                                   PositionedDirectional(
                                     top: AppSize.s16h,
-                                    end: -AppSize.s25h,
+                                    end: lang == 'en' ? -AppSize.s25h : null,
+                                    start: lang == 'ar' ? -AppSize.s25h : null,
                                     child: CustomPaint(
                                       painter: PathPainter(
                                         AppColors.primaryBright,
                                       ),
-                                      size: const Size(200, 200),
+                                      size: Size(AppSize.s200w, AppSize.s200h),
                                     ),
                                   ),
                                   PositionedDirectional(
-                                    bottom: -220,
-                                    start: -120,
+                                    bottom: -AppSize.s220h,
+                                    start: lang == 'en' ? -AppSize.s130w : null,
+                                    end: lang == 'ar' ? -AppSize.s130w : null,
                                     child: CustomPaint(
                                       painter: PathPainter(
                                         AppColors.primaryBright,
                                       ),
-                                      size: const Size(200, 200),
+                                      size: Size(AppSize.s200w, AppSize.s200h),
                                     ),
                                   ),
                                   PositionedDirectional(
-                                    start: AppSize.s72w,
+                                    start: lang == 'en' ? AppSize.s72w : null,
+                                    end: lang == 'ar' ? AppSize.s72w : null,
                                     bottom: AppSize.s35h,
                                     child: Text(
                                       cubit.loginData.students![index].name,
@@ -104,7 +106,8 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                                     ),
                                   ),
                                   PositionedDirectional(
-                                    end: AppSize.s35w,
+                                    end: lang == 'en' ? AppSize.s35w : null,
+                                    start: lang == 'ar' ? AppSize.s35w : null,
                                     top: AppSize.s30h,
                                     child: CircleAvatar(
                                       radius: AppRadius.r30,
@@ -121,7 +124,8 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                   ),
                 ),
                 PositionedDirectional(
-                  end: AppSize.s35w,
+                  end: lang == 'en' ? AppSize.s35w : null,
+                  start: lang == 'ar' ? AppSize.s35w : null,
                   top: AppSize.s60h,
                   child: Builder(
                     builder: (BuildContext context) => InkWell(
@@ -147,10 +151,15 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                   ),
                 ),
                 PositionedDirectional(
-                  start: AppSize.s20w,
+                  start: Localizations.localeOf(context).languageCode == 'en'
+                      ? AppSize.s20w
+                      : null,
                   top: AppSize.s60h,
+                  end: Localizations.localeOf(context).languageCode == 'ar'
+                      ? AppSize.s20w
+                      : null,
                   child: Text(
-                    'Your children are',
+                    getLang(context, 'children'),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Colors.white,

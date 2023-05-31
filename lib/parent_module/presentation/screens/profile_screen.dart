@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/screens/auth/auth_layout.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
+import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/profile_cubit/profile_cubit.dart';
@@ -26,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Ahmed Idress',
+                  cubit.isParent ? cubit.parent.parentName : cubit.teacher.name,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Padding(
@@ -35,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
                     top: AppSize.s10h,
                   ),
                   child: Text(
-                    'omarehab@parent.ibnkhaldun | +01010826486',
+                    '${cubit.isParent ? cubit.parent.email : cubit.teacher.email} | ${cubit.isParent ? cubit.parent.phoneNumber : cubit.teacher.phoneNumber}',
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall
@@ -47,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       AppRadius.r16,
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     boxShadow: const [
                       BoxShadow(
                         blurRadius: 2,
@@ -61,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                           Icons.notifications_active,
                         ),
                         title: Text(
-                          'Notifications',
+                          getLang(context, "notification"),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
@@ -70,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
                           Icons.translate_outlined,
                         ),
                         title: Text(
-                          'Language',
+                          getLang(context, 'lang'),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         trailing: InkWell(
@@ -78,7 +79,8 @@ class ProfileScreen extends StatelessWidget {
                             cubit.changeLang();
                           },
                           child: Text(
-                            cubit.arabicString,
+                            getLang(
+                                context, cubit.arabic ? 'arabic' : 'english'),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -91,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                           Icons.lightbulb_outlined,
                         ),
                         title: Text(
-                          'Theme',
+                          getLang(context, 'theme'),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         trailing: InkWell(
@@ -99,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                             cubit.changeTheme();
                           },
                           child: Text(
-                            '${cubit.themeMode} mode',
+                            getLang(context, cubit.dark ? 'dark' : 'light'),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -120,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(
                         AppRadius.r16,
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                       boxShadow: const [
                         BoxShadow(
                           blurRadius: 2,
@@ -134,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
                             Icons.help_outline_outlined,
                           ),
                           title: Text(
-                            'Help & Support',
+                            getLang(context, 'help'),
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
@@ -143,7 +145,7 @@ class ProfileScreen extends StatelessWidget {
                             Icons.question_answer_outlined,
                           ),
                           title: Text(
-                            'Contact us',
+                            getLang(context, 'contact'),
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
@@ -152,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
                             Icons.privacy_tip_outlined,
                           ),
                           title: Text(
-                            'Privacy policy',
+                            getLang(context, 'policy'),
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
@@ -165,7 +167,7 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       AppRadius.r16,
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     boxShadow: const [
                       BoxShadow(
                         blurRadius: 2,
@@ -184,7 +186,7 @@ class ProfileScreen extends StatelessWidget {
                             color: Colors.redAccent,
                           ),
                           title: Text(
-                            'Log Out',
+                            getLang(context, "logout"),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge

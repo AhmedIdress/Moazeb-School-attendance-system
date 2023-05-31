@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/screens/auth/login_screen.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
+import 'package:ibn_khaldun/core/extensions_helper.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var height = context.screenHeight;
+    var width = context.screenWidth;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
-              height: size.height * .31,
+              height: height * .31,
               child: Stack(
                 children: [
                   Container(
-                    height: size.height * .15,
+                    height: height * .15,
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       border: Border.all(
@@ -32,25 +34,25 @@ class AuthLayout extends StatelessWidget {
                     ),
                   ),
                   PositionedDirectional(
-                    top: size.height * .149,
+                    top: height * .149,
                     start: 0,
                     child: Container(
                       padding: EdgeInsets.zero,
-                      width: size.width * 0.3,
-                      height: size.height * 0.15,
+                      width: width * 0.3,
+                      height: height * 0.15,
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                       ),
                     ),
                   ),
                   PositionedDirectional(
-                    top: size.height * .15,
+                    top: height * .15,
                     start: 0,
                     child: Container(
-                      width: size.width * 0.31,
-                      height: size.height * 0.152,
+                      width: width * 0.31,
+                      height: height * 0.152,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadiusDirectional.only(
                           topStart: Radius.circular(AppRadius.r80),
                         ),

@@ -4,13 +4,19 @@ import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/controllers/
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/controllers/boarding/boarding_state.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/screens/auth/auth_layout.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
+import 'package:ibn_khaldun/core/extensions_helper.dart';
 
 class Onboarding extends StatelessWidget {
   Onboarding({Key? key}) : super(key: key);
   final PageController _controller = PageController();
+
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<BoardingCubit>(context);
+    var locale = Localizations.localeOf(context);
+    if (locale.languageCode == 'ar') {
+      cubit.trans();
+    }
     return BlocConsumer<BoardingCubit, BoardingState>(
       listener: (context, state) {
         if (state is NextBoardingState) {
@@ -19,11 +25,8 @@ class Onboarding extends StatelessWidget {
             curve: Curves.easeInCirc,
           );
         } else if (state is EndBoardingState) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const AuthLayout(),
-            ),
-            (route) => false,
+          context.pushReplacement(
+            const AuthLayout(),
           );
         }
       },

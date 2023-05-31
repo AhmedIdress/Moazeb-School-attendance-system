@@ -9,7 +9,7 @@ class HiveDataSource<T> {
   late Box _box;
 
   void set(String key, T value) async {
-    _box.put(key, value);
+    await _box.put(key, value);
   }
 
   T get(

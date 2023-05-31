@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
@@ -26,8 +27,9 @@ class ChildScreen extends StatelessWidget {
       builder: (context, state) {
         if (/*state is ChildReInitialState ||*/
             state is GetDataSuccessfullyState) {
+          String lang = Localizations.localeOf(context).languageCode;
           return Scaffold(
-            backgroundColor: const Color.fromRGBO(0, 102, 79, 1),
+            backgroundColor: Theme.of(context).colorScheme.primary,
             body: SafeArea(
               child: Stack(
                 alignment: AlignmentDirectional.topEnd,
@@ -36,9 +38,9 @@ class ChildScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.bottomStart,
                     child: Container(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * .65,
+                      height: context.screenHeight * .65,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(
                             AppRadius.r35,
@@ -57,18 +59,16 @@ class ChildScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Attendance',
+                                      getLang(context, 'attendance'),
                                       style: Theme.of(context)
                                           .textTheme
                                           .displaySmall,
                                     ),
                                     Text(
-                                      'Student attendance in semester',
+                                      getLang(context, 'semiAttend'),
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium
@@ -80,16 +80,14 @@ class ChildScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => CalenderScreen(
-                                          id: id,
-                                        ),
+                                    context.push(
+                                      CalenderScreen(
+                                        id: id,
                                       ),
                                     );
                                   },
                                   child: Text(
-                                    'Details',
+                                    getLang(context, 'details'),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
@@ -133,12 +131,15 @@ class ChildScreen extends StatelessWidget {
                                           ),
                                           PositionedDirectional(
                                             top: 0,
-                                            end: -AppSize.s35w,
+                                            end: lang == 'en'
+                                                ? -AppSize.s35w
+                                                : -AppSize.s100w,
                                             child: CustomPaint(
                                               painter: PathPainter(
                                                 cubit.cards[index].maskColor,
                                               ),
-                                              size: const Size(200, 200),
+                                              size: Size(
+                                                  AppSize.s200w, AppSize.s200h),
                                             ),
                                           ),
                                           PositionedDirectional(
@@ -162,7 +163,8 @@ class ChildScreen extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Text(
-                                                  cubit.cards[index].state,
+                                                  getLang(context,
+                                                      cubit.cards[index].state),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleMedium
@@ -220,26 +222,46 @@ class ChildScreen extends StatelessWidget {
                                             ),
                                             PositionedDirectional(
                                               top: AppSize.s16h,
-                                              end: -AppSize.s25h,
+                                              end: lang == 'en'
+                                                  ? -AppSize.s30w
+                                                  : -AppSize.s100w,
                                               child: CustomPaint(
                                                 painter: PathPainter(
                                                   cubit.schedule.maskColor,
                                                 ),
-                                                size: const Size(200, 200),
+                                                size: Size(AppSize.s200w,
+                                                    AppSize.s200h),
                                               ),
                                             ),
                                             PositionedDirectional(
                                               start: AppSize.s35w,
                                               top: AppSize.s35h,
-                                              child: Text(
-                                                cubit.schedule.state,
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge
-                                                    ?.copyWith(
-                                                      color: Colors.white,
-                                                    ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    cubit.studentModel.data
+                                                            ?.className ??
+                                                        '',
+                                                    textAlign: TextAlign.center,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleLarge
+                                                        ?.copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    getLang(context,
+                                                        cubit.schedule.state),
+                                                    textAlign: TextAlign.center,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleLarge
+                                                        ?.copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             PositionedDirectional(
@@ -268,10 +290,10 @@ class ChildScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).pop();
+                                context.pop();
                               },
                               child: Text(
-                                'back',
+                                getLang(context, 'back'),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -291,9 +313,18 @@ class ChildScreen extends StatelessWidget {
                     ),
                   ),
                   PositionedDirectional(
-                    bottom: MediaQuery.of(context).size.height * 0.62,
-                    child: SvgPicture.asset(
-                      AppPath.bookIcon,
+                    bottom: context.screenHeight * 0.62,
+                    end: Directionality.of(context) == TextDirection.ltr
+                        ? 0
+                        : context.screenWidth * 0.682,
+                    child: Transform(
+                      transform: Matrix4.rotationY(
+                          Directionality.of(context) == TextDirection.ltr
+                              ? 0
+                              : 3.14),
+                      child: SvgPicture.asset(
+                        AppPath.bookIcon,
+                      ),
                     ),
                   ),
                   PositionedDirectional(
@@ -339,23 +370,56 @@ class ChildScreen extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          Text(
-                            "Level ${cubit.studentModel.data?.grade}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  color: Colors.white,
-                                ),
+                          Row(
+                            children: [
+                              Text(
+                                getLang(context, 'levelName'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                              SizedBox(
+                                width: AppSize.s10w,
+                              ),
+                              Text(
+                                "${cubit.studentModel.data?.grade}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'class ${cubit.studentModel.data?.className}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  color: Colors.white,
-                                ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                getLang(context, 'className'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                              SizedBox(
+                                width: AppSize.s10w,
+                              ),
+                              Text(
+                                cubit.studentModel.data?.className ?? "",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

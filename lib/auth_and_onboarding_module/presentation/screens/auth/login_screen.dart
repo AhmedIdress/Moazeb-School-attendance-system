@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibn_khaldun/auth_and_onboarding_module/data/data_source/local_data_source/hive_data_source.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/controllers/login/login_cubit.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/controllers/login/login_state.dart';
 import 'package:ibn_khaldun/core/app_locale.dart';
@@ -7,9 +8,10 @@ import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/component/custom_button.dart';
 import 'package:ibn_khaldun/core/component/password_box.dart';
 import 'package:ibn_khaldun/core/component/text_box.dart';
+import 'package:ibn_khaldun/core/constants.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/children_screen.dart';
-import 'package:ibn_khaldun/teacher_module/presentation/screens/classes/class_screen.dart';
+import 'package:ibn_khaldun/teacher_module/presentation/screens/teacher_table_screen.dart';
 import 'package:translator/translator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -38,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                langCode == 'ar' ? 'تم تسجيل الدخول بنجاح' : state.message,
+                langCode == 'ar' ? getLang(context, 'success') : state.message,
               ),
             ),
           );
@@ -71,10 +73,13 @@ class _LoginScreenState extends State<LoginScreen>
           }
         }
         if (state is LoginSuccessfullyState) {
+          HiveDataSource hiveBool =
+              HiveDataSource<bool>(AppLocalDataKeys.cacheBoxName);
+          hiveBool.set(AppLocalDataKeys.isParent, state.isParent);
           if (state.isParent) {
             context.pushReplacement(const ChildrenScreen());
           } else {
-            context.pushReplacement(const ClassesScreen());
+            context.pushReplacement(const TeacherTableScreen());
           }
         }
       },
@@ -106,20 +111,23 @@ class _LoginScreenState extends State<LoginScreen>
                       _emailController.text,
                       _passwordController.text,
                     );
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: SizedBox(
+                              width: context.screenWidth * 0.5,
+                              height: context.screenHeight * 0.25,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        });
                   }
                 },
                 text: getLang(context, 'login'),
               ),
-              /*ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const ChildrenScreen(),
-                    ),
-                  );
-                },
-                child: const Text('demo access'),
-              ),*/
             ],
           ),
         );

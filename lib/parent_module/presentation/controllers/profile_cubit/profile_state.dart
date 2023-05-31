@@ -5,6 +5,8 @@ abstract class ProfileState {}
 
 class ProfileInitialState extends ProfileState {}
 
+class ProfileDataState extends ProfileState {}
+
 class ThemeState extends ProfileState {}
 
 class LangState extends ProfileState {}

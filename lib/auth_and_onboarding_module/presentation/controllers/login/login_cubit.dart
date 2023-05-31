@@ -10,6 +10,7 @@ class LoginCubit extends Cubit<LoginState> {
   final BaseAuthRepository _baseAuthRepository = AuthRepository();
 
   void login(String email, String password) async {
+    emit(WaitingLoginState());
     if (email.contains('@parent')) {
       try {
         var login = await _baseAuthRepository.login(email, password);

@@ -42,6 +42,9 @@ class TextBox extends StatelessWidget {
             return null;
           },
           keyboardType: inputType,
+          /*inputFormatters: [
+            // FilteringTextInputFormatter.allow(r'\w@(parent|teacher).ibnkaldun')
+          ],*/
           decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.r10),

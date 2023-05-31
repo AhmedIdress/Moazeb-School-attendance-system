@@ -25,24 +25,19 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
     Colors.blueGrey,
   ];
   final List<String> days = const [
-    'Day of absent',
-    'Day of attendance',
-    'Day of excuses',
+    'absentDay',
+    'attendDay',
+    'excuseDay',
   ];
 
   DateTime currentStart = DateTime.now();
   late DateTime semiStart;
   late DateTime semiEnd;
+
 ////////
   List<DateTime> calDays = [];
   List<DayStateModel> displayDays = [];
-  /* List<DayStateModel> stateDays = [
-    DayStateModel(DateTime(2023, 3, 16), 'absent'),
-    DayStateModel(DateTime(2023, 3, 12), 'attend'),
-    DayStateModel(DateTime(2023, 3, 20), 'execute'),
-    DayStateModel(DateTime(2023, 3, 22), 'absent'),
-    DayStateModel(DateTime(2023, 3, 27), 'attend'),
-  ];*/
+
   DateTime getLastSundayInMonth(DateTime dateTime) {
     // Find the last day of the month
     DateTime lastDayOfMonth = DateTime(
@@ -118,16 +113,10 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
             .add(Duration(days: i)),
       );
     }
-    //print(calDays);
     emit(ShowDetailCustomCalendarState());
   }
 
   void nextMonth() async {
-    /*if (currentStart.isBefore(semiEnd.copyWith(day: 1).add(Duration(
-            days: 30)) */ /*.subtract(
-      const Duration(days: 30),
-    )*/ /*
-        )) */
     if (currentStart.year == semiEnd.year &&
         currentStart.month == semiEnd.month) {
       return;
@@ -173,7 +162,7 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
     emit(ShowDetailCustomCalendarState());
   }
 
-  /*void checkStatus() {
+/*void checkStatus() {
     displayDays = [];
     bool flag = false;
     for (var element in calDays) {

@@ -16,6 +16,7 @@ import 'package:ibn_khaldun/parent_module/presentation/controllers/custom_calend
 import 'package:ibn_khaldun/parent_module/presentation/controllers/profile_cubit/profile_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/study_schedule_cubit/study_schedule_cubit.dart';
 import 'package:ibn_khaldun/teacher_module/presentation/controllers/classes_cubit/classes_cubit.dart';
+import 'package:ibn_khaldun/teacher_module/presentation/controllers/teacher_table/teacher_cubit.dart';
 
 import 'core/constants.dart';
 
@@ -27,6 +28,7 @@ void main() async {
 }
 
 ValueNotifier<bool> themeNotifier = ValueNotifier(false);
+ValueNotifier<bool> arabicNotifier = ValueNotifier(false);
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -40,12 +42,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    /*if (hive.get(AppLocalDataKeys.first) == null) {
+    if (hive.get(AppLocalDataKeys.first) == null) {
       Brightness systemBrightness = MediaQuery.of(context).platformBrightness;
       hive.set(AppLocalDataKeys.dark, systemBrightness == Brightness.dark);
+      themeNotifier.value = hive.get(AppLocalDataKeys.dark);
+      hive.set(AppLocalDataKeys.first, true);
     }
-    themeNotifier.value = hive.get(AppLocalDataKeys.dark) ?? false;
-*/
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -72,6 +74,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (BuildContext context) => ClassesCubit(),
         ),
+        BlocProvider(
+          create: (BuildContext context) => TeacherCubit(),
+        ),
       ],
       child: ScreenUtilInit(
         builder: (context, widget) {
@@ -90,18 +95,22 @@ class _MyAppState extends State<MyApp> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            locale:
+                arabicNotifier.value ? const Locale('ar') : const Locale('en'),
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),
             ],
             localeResolutionCallback: (currentLang, supportLang) {
-              /*var cache = HiveDataSource<bool?>(AppLocalDataKeys.cacheBoxName);
-              if (cache.get(AppLocalDataKeys.first) == null) {
+              var cache = HiveDataSource<bool?>(AppLocalDataKeys.cacheBoxName);
+              var first = cache.get(AppLocalDataKeys.first);
+              if (first == null || first != false) {
                 if (currentLang != null) {
                   for (Locale locale in supportLang) {
                     if (locale.languageCode == currentLang.languageCode) {
                       cache.set(AppLocalDataKeys.arabic,
                           currentLang.languageCode == 'ar');
+                      cache.set(AppLocalDataKeys.first, false);
                       return currentLang;
                     }
                   }
@@ -111,11 +120,10 @@ class _MyAppState extends State<MyApp> {
                 cache.set(AppLocalDataKeys.first, false);
                 return supportLang.last;
               } else {
-                return cache.get(AppLocalDataKeys.arabic) ?? false
+                return arabicNotifier.value
                     ? supportLang.first
                     : supportLang.last;
-              }*/
-              return supportLang.last;
+              }
             },
           );
         },
@@ -123,14 +131,16 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-/*@override
+  @override
   void initState() {
+    themeNotifier.value = hive.get(AppLocalDataKeys.dark) ?? false;
     themeNotifier.addListener(() {
-      setState(() {
-        themeNotifier.value = hive.get(AppLocalDataKeys.dark) ?? false;
-      });
-      print(themeNotifier.value);
+      setState(() {});
+    });
+    arabicNotifier.value = hive.get(AppLocalDataKeys.arabic) ?? false;
+    arabicNotifier.addListener(() {
+      setState(() {});
     });
     super.initState();
-  }*/
+  }
 }

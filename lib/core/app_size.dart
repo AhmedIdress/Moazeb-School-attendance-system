@@ -31,9 +31,15 @@ class AppSize {
   static double s60w = 60.w;
   static double s90h = 90.h;
   static double s90w = 90.w;
+  static double s100w = 100.w;
+  static double s110h = 110.h;
   static double s120h = 120.h;
   static double s150h = 150.h;
   static double s120w = 120.w;
+  static double s130w = 130.w;
+  static double s200h = 200.h;
+  static double s220h = 220.h;
+  static double s200w = 200.w;
 }
 
 class AppFont {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
+import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/component/gradiant_widget.dart';
 import 'package:ibn_khaldun/core/constants.dart';
@@ -10,10 +11,12 @@ import 'package:ibn_khaldun/parent_module/presentation/controllers/study_schedul
 class StudySchedule extends StatelessWidget {
   const StudySchedule({Key? key, required this.className}) : super(key: key);
   final String className;
+
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<StudyScheduleCubit>(context);
-    cubit.init(className);
+    String lang = Localizations.localeOf(context).languageCode;
+    cubit.init(className, lang);
     return BlocConsumer<StudyScheduleCubit, StudyScheduleState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -27,31 +30,52 @@ class StudySchedule extends StatelessWidget {
           );
         } else {
           return Scaffold(
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor:
+                Theme.of(context).colorScheme.brightness == Brightness.light
+                    ? Colors.grey.shade200
+                    : Colors.blueGrey.shade200,
             body: SafeArea(
               child: Column(
                 children: [
                   Expanded(
                     child: Center(
-                      child: GradientWidget(
-                        widget: Text(
-                          'Study schedule',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(color: AppColors.primary),
-                        ),
-                        gradient: LinearGradient(colors: [
-                          AppColors.primary,
-                          AppColors.primaryBright
-                        ]),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSize.s16w,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                context.pop();
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios_outlined,
+                                color: AppColors.primaryBright,
+                              ),
+                            ),
+                          ),
+                          GradientWidget(
+                            widget: Text(
+                              getLang(context, 'study'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(color: AppColors.primary),
+                            ),
+                            gradient: LinearGradient(colors: [
+                              AppColors.primary,
+                              AppColors.primaryBright
+                            ]),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   Container(
                     height: context.screenHeight * .87,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.background,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(
                           AppRadius.r20,
@@ -68,37 +92,42 @@ class StudySchedule extends StatelessWidget {
                           ),
                           child: SizedBox(
                             height: context.screenHeight * .05,
-                            child: Row(
-                              children: workDays.map((e) {
-                                return Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      cubit.setDay(e);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: e == cubit.day
-                                              ? AppColors.primaryBright
-                                              : null,
-                                          borderRadius: BorderRadius.circular(
-                                              AppRadius.r16)),
-                                      child: Center(
-                                        child: Text(
-                                          e.substring(0, 3),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall
-                                              ?.copyWith(
-                                                color: e == cubit.day
-                                                    ? Colors.white
-                                                    : null,
-                                              ),
-                                        ),
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    cubit.setDay(workDays[index]);
+                                  },
+                                  child: Container(
+                                    width: context.screenWidth * 0.18,
+                                    decoration: BoxDecoration(
+                                        color: workDays[index] == cubit.day
+                                            ? AppColors.primaryBright
+                                            : null,
+                                        borderRadius: BorderRadius.circular(
+                                            AppRadius.r16)),
+                                    child: Center(
+                                      child: Text(
+                                        lang == 'en'
+                                            ? workDays[index].substring(0, 3)
+                                            : workDaysAr[index],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall
+                                            ?.copyWith(
+                                              color:
+                                                  workDays[index] == cubit.day
+                                                      ? Colors.white
+                                                      : null,
+                                            ),
                                       ),
                                     ),
                                   ),
                                 );
-                              }).toList(),
+                              },
+                              itemCount: workDays.length,
                             ),
                           ),
                         ),
@@ -125,10 +154,6 @@ class StudySchedule extends StatelessWidget {
                                             start: AppSize.s16w,
                                           ),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.baseline,
-                                            textBaseline:
-                                                TextBaseline.alphabetic,
                                             children: [
                                               Text(
                                                 cubit.times.period?[index]
@@ -181,9 +206,10 @@ class StudySchedule extends StatelessWidget {
                                           alignment:
                                               AlignmentDirectional.bottomEnd,
                                           child: Text(
-                                            cubit.times.period?[index]?.name ==
-                                                    "Break"
-                                                ? "Break"
+                                            cubit.times.period?[index]?.name
+                                                        .toLowerCase() ==
+                                                    "Break".toLowerCase()
+                                                ? getLang(context, 'break')
                                                 : (cubit.dayData[cubit.times
                                                         .period?[index]?.name
                                                         .toLowerCase()] ??

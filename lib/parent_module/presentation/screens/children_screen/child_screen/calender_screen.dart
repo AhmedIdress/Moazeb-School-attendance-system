@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/constants.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
@@ -14,6 +15,7 @@ class CalenderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<CustomCalenderCubit>(context);
     cubit.init(id);
+    Brightness brightness = Theme.of(context).colorScheme.brightness;
     return BlocConsumer<CustomCalenderCubit, CustomCalendarState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -24,22 +26,25 @@ class CalenderScreen extends StatelessWidget {
             body: Center(
               child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    context.pop();
                   },
                   child: const CircularProgressIndicator()),
             ),
           );
         } else {
           return Scaffold(
-            backgroundColor: Colors.grey.shade300,
+            backgroundColor:
+                Theme.of(context).colorScheme.brightness == Brightness.light
+                    ? Colors.grey.shade300
+                    : Theme.of(context).colorScheme.background,
             body: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.182,
+                  height: context.screenHeight * 0.182,
                   child: Stack(
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.15,
+                        height: context.screenHeight * 0.15,
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.vertical(
@@ -55,12 +60,8 @@ class CalenderScreen extends StatelessWidget {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: /*const Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                          )*/
-                              Text(
-                            'back',
+                          child: Text(
+                            getLang(context, 'back'),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -86,9 +87,10 @@ class CalenderScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                             horizontal: AppSize.s16w,
                           ),
-                          height: MediaQuery.of(context).size.height * 0.07,
+                          height: context.screenHeight * 0.07,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(
                               AppRadius.r24,
                             ),
@@ -136,9 +138,11 @@ class CalenderScreen extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSize.s10h),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.42,
+                            height: context.screenHeight * 0.42,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                               borderRadius: BorderRadius.circular(
                                 AppRadius.r24,
                               ),
@@ -153,22 +157,39 @@ class CalenderScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: weekDays
-                                        .map(
-                                          (e) => Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                e.substring(0, 3),
+                                    children: Localizations.localeOf(context)
+                                                .languageCode ==
+                                            'en'
+                                        ? weekDays
+                                            .map(
+                                              (e) => Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    e.substring(0, 3),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
+                                            )
+                                            .toList()
+                                        : weekDayArabic
+                                            .map(
+                                              (e) => Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    e,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
                                   ),
                                   Expanded(
                                     child: GridView.builder(
                                         padding: EdgeInsets.only(
-                                          top: AppSize.s10h,
+                                          top: AppSize.s2h,
                                         ),
                                         itemCount: cubit.displayDays.length,
                                         gridDelegate:
@@ -185,10 +206,23 @@ class CalenderScreen extends StatelessWidget {
                                                           .displayDays[index]
                                                           .state ==
                                                       ''
-                                                  ? Colors.white
-                                                  : cubit.sColor[cubit
-                                                      .displayDays[index]
-                                                      .state],
+                                                  ? Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer
+                                                  : (Theme.of(context)
+                                                                  .colorScheme
+                                                                  .brightness ==
+                                                              Brightness
+                                                                  .dark) &&
+                                                          (cubit.sColor[cubit
+                                                                  .displayDays[
+                                                                      index]
+                                                                  .state] ==
+                                                              Colors.blueGrey)
+                                                      ? Colors.blue
+                                                      : cubit.sColor[cubit
+                                                          .displayDays[index]
+                                                          .state],
                                               child: Center(
                                                 child: Text(
                                                   cubit.displayDays[index].day
@@ -231,7 +265,8 @@ class CalenderScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: AppSize.s16w),
                           height: context.screenHeight * 0.12,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(
                               AppRadius.r24,
                             ),
@@ -240,7 +275,7 @@ class CalenderScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Total studying days',
+                                getLang(context, 'totalStudy'),
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                               Container(
@@ -285,7 +320,14 @@ class CalenderScreen extends StatelessWidget {
                                   bottom: AppSize.s10h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: cubit.sColor2[index],
+                                  color: (Theme.of(context)
+                                                  .colorScheme
+                                                  .brightness ==
+                                              Brightness.dark) &&
+                                          (cubit.sColor2[index] ==
+                                              Colors.blueGrey)
+                                      ? Colors.blue
+                                      : cubit.sColor2[index],
                                   borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(
                                       AppRadius.r16,
@@ -302,19 +344,25 @@ class CalenderScreen extends StatelessWidget {
                                           .textTheme
                                           .displayLarge
                                           ?.copyWith(
-                                              color: Colors.white,
+                                              color:
+                                                  brightness == Brightness.light
+                                                      ? Colors.white
+                                                      : null,
                                               fontSize: 70),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: AppSize.s10w),
                                       child: Text(
-                                        cubit.days[index],
+                                        getLang(context, cubit.days[index]),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall
                                             ?.copyWith(
-                                              color: Colors.white,
+                                              color:
+                                                  brightness == Brightness.light
+                                                      ? Colors.white
+                                                      : null,
                                             ),
                                         textAlign: TextAlign.center,
                                       ),

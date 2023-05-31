@@ -48,6 +48,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   translator: ^0.1.7
+  flutter_typeahead: ^4.6.0
 
 
 dev_dependencies:

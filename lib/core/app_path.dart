@@ -14,4 +14,5 @@ class AppPath {
   static String success = '${image}success-green-check-mark-icon.svg';
   static String wrong = '${image}wrong-icon.svg';
   static String subtract = '${image}subtract-color-outline-icon.svg';
+  static String empty = '${image}Frame empty.svg';
 }

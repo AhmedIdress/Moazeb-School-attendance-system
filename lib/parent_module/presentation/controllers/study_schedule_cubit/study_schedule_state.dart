@@ -8,3 +8,5 @@ class StudyScheduleInitialState extends StudyScheduleState {}
 class StudyScheduleChangeDayState extends StudyScheduleState {}
 
 class GetDataStudyScheduleState extends StudyScheduleState {}
+
+class TransDataStudyScheduleState extends StudyScheduleState {}

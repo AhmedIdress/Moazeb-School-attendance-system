@@ -16,6 +16,7 @@ class ChildCubit extends Cubit<ChildState> {
   final BaseParentRepository _baseParentRepository = ParentRepository();
   late SemiAttendanceModel semiAttendanceModel;
   late StudentModel studentModel;
+
   void init(String id) {
     /*getSemiAttendance(id);
     getStudentData(id);*/
@@ -52,21 +53,21 @@ class ChildCubit extends Cubit<ChildState> {
   void fill() {
     cards = [
       CardStyleModel(
-        state: 'Day of attendance',
+        state: 'attendDay',
         backgroundColor: const Color.fromRGBO(255, 118, 72, 1),
         maskColor: const Color.fromRGBO(255, 194, 120, 1),
         icon: AppPath.success,
         days: semiAttendanceModel.present,
       ),
       CardStyleModel(
-        state: 'Day of absent',
+        state: 'absentDay',
         backgroundColor: const Color.fromRGBO(143, 152, 255, 1),
         maskColor: const Color.fromRGBO(24, 42, 136, 1),
         icon: AppPath.subtract,
         days: semiAttendanceModel.absent,
       ),
       CardStyleModel(
-        state: 'Day of excuses',
+        state: 'excuseDay',
         backgroundColor: const Color.fromRGBO(255, 194, 120, 1),
         maskColor: const Color.fromRGBO(255, 118, 72, 1),
         icon: AppPath.wrong,
@@ -77,7 +78,7 @@ class ChildCubit extends Cubit<ChildState> {
 
   List<CardStyleModel> cards = [];
   CardStyleModel schedule = CardStyleModel(
-    state: '5A \nSchedule',
+    state: 'schedule',
     backgroundColor: const Color.fromRGBO(77, 197, 145, 1),
     maskColor: const Color.fromRGBO(0, 102, 79, 1),
     icon: AppPath.notes,
