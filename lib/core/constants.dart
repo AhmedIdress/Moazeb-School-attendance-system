@@ -1,6 +1,5 @@
-String baseUrl = /*'https://localhost:5001/api/'*/
-    'http://payrolly-001-site1.ftempurl.com/api/';
-String imageHost = 'http://payrolly-001-site1.ftempurl.com/api';
+String baseUrl = 'http://moazeb-001-site1.ftempurl.com/api/';
+
 const List<String> weekDays = [
   'Sunday',
   'Monday',

@@ -26,10 +26,14 @@ class _ClassScreenState extends State<ClassScreen> {
 
     return BlocConsumer<ClassesCubit, ClassesState>(
       listener: (context, state) {
+        if (state is ClassesGetFailedState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
         // TODO: implement listener
       },
       builder: (context, state) {
-        if (state is ClassesInitialState) {
+        if (state is ClassesInitialState || state is ClassesGetFailedState) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -65,28 +69,78 @@ class _ClassScreenState extends State<ClassScreen> {
                 },
               ),
             ),
-            body: ListView.separated(
-              itemCount: cubit.children.data?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    context.push(
-                        ChildScreen(id: cubit.children.data?[index].id ?? ''));
-                  },
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(AppPath.hima),
-                    ),
-                    title: Text(cubit.children.data?[index].name ?? ''),
+            body: Column(
+              children: [
+                Container(
+                  padding: EdgeInsetsDirectional.only(
+                    start: AppSize.s60w,
+                    end: AppSize.s16w,
                   ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSize.s16w),
-                  child: const Divider(),
-                );
-              },
+                  height: context.screenHeight * .03,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'attend',
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                      Text(
+                        'excused',
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                      Text(
+                        'absent',
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: cubit.children.data?.length ?? 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          context.push(ChildScreen(
+                              id: cubit.children.data?[index].id ?? ''));
+                        },
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(AppPath.hima),
+                          ),
+                          title: Text(cubit.children.data?[index].name ?? ''),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(cubit.children.data?[index].present
+                                      .toString() ??
+                                  ''),
+                              Text(cubit.children.data?[index].excused
+                                      .toString() ??
+                                  ''),
+                              Text(cubit.children.data?[index].absent
+                                      .toString() ??
+                                  ''),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: AppSize.s16w),
+                        child: const Divider(),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         }

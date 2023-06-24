@@ -25,9 +25,9 @@ class TeacherRemoteDataSource extends BaseTeacherRemoteDataSource {
   Future<ClassChildrenModel> getClassChildren(
       String className, String token) async {
     try {
-      var data = await DioHelper.getData(
-          url: AppEndPoint.classes + className + AppEndPoint.students,
-          token: token);
+      String link = AppEndPoint.classes + className + AppEndPoint.students;
+      print(link);
+      var data = await DioHelper.getData(url: link, token: token);
       print(data.data);
       return ClassChildrenModel.fromJson(data.data);
     } catch (e) {

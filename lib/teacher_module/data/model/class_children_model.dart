@@ -56,6 +56,9 @@ class Data {
   late String parentId;
   late String parentJob;
   late String imageUrl;
+  late int present;
+  late int absent;
+  late int excused;
 
   Data(
       {required this.id,

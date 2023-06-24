@@ -60,18 +60,18 @@ class ChildCubit extends Cubit<ChildState> {
         days: semiAttendanceModel.present,
       ),
       CardStyleModel(
-        state: 'absentDay',
+        state: 'excuseDay',
         backgroundColor: const Color.fromRGBO(143, 152, 255, 1),
         maskColor: const Color.fromRGBO(24, 42, 136, 1),
         icon: AppPath.subtract,
-        days: semiAttendanceModel.absent,
+        days: semiAttendanceModel.excused,
       ),
       CardStyleModel(
-        state: 'excuseDay',
+        state: 'absentDay',
         backgroundColor: const Color.fromRGBO(255, 194, 120, 1),
         maskColor: const Color.fromRGBO(255, 118, 72, 1),
         icon: AppPath.wrong,
-        days: semiAttendanceModel.excused,
+        days: semiAttendanceModel.absent,
       )
     ];
   }
