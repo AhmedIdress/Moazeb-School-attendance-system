@@ -118,7 +118,7 @@ class _TeacherTableScreenState extends State<TeacherTableScreen> {
                               },
                               child: CircleAvatar(
                                 radius: AppRadius.r35,
-                                backgroundImage: AssetImage(AppPath.prof2),
+                                backgroundImage: AssetImage(AppPath.user),
                               ),
                             ),
                           ),
@@ -238,6 +238,22 @@ class _TeacherTableScreenState extends State<TeacherTableScreen> {
                                                   ),
                                                   child: Column(
                                                     children: [
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical:
+                                                                    AppSize
+                                                                        .s10h),
+                                                        child: Text(
+                                                          cubit.tablesDay[index]
+                                                              .periodNo
+                                                              .toString(),
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .displaySmall,
+                                                        ),
+                                                      ),
                                                       Text(
                                                         cubit
                                                                 .times
@@ -302,19 +318,18 @@ class _TeacherTableScreenState extends State<TeacherTableScreen> {
                                                   height: double.infinity,
                                                   alignment:
                                                       AlignmentDirectional
-                                                          .bottomEnd,
+                                                          .center,
                                                   child: Text(
                                                     cubit.tablesDay[index]
                                                         .subjectName,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .displayMedium
+                                                        .displaySmall
                                                         ?.copyWith(
                                                           color:
                                                               //AppColors.primaryBright
                                                               Colors.white,
                                                         ),
-                                                    textAlign: TextAlign.end,
                                                   ),
                                                 ),
                                               ),

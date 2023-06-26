@@ -342,7 +342,7 @@ class ChildScreen extends StatelessWidget {
                                   ?*/
                                   DecorationImage(
                                 image: AssetImage(
-                                  AppPath.hima,
+                                  AppPath.user,
                                 ),
                               )
                               //todo: remove

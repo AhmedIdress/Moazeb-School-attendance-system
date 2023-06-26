@@ -111,7 +111,7 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                                     top: AppSize.s30h,
                                     child: CircleAvatar(
                                       radius: AppRadius.r30,
-                                      backgroundImage: AssetImage(AppPath.hima),
+                                      backgroundImage: AssetImage(AppPath.user),
                                     ),
                                   ),
                                 ],
@@ -145,7 +145,7 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                       },
                       child: CircleAvatar(
                         radius: AppRadius.r35,
-                        backgroundImage: AssetImage(AppPath.prof2),
+                        backgroundImage: AssetImage(AppPath.user),
                       ),
                     ),
                   ),

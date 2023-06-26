@@ -112,7 +112,7 @@ class _ClassScreenState extends State<ClassScreen> {
                         },
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: AssetImage(AppPath.hima),
+                            backgroundImage: AssetImage(AppPath.user),
                           ),
                           title: Text(cubit.children.data?[index].name ?? ''),
                           subtitle: Row(

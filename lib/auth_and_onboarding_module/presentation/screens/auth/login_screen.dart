@@ -76,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen>
           HiveDataSource hiveBool =
               HiveDataSource<bool>(AppLocalDataKeys.cacheBoxName);
           hiveBool.set(AppLocalDataKeys.isParent, state.isParent);
+          print(state.isParent);
           if (state.isParent) {
             context.pushReplacement(const ChildrenScreen());
           } else {

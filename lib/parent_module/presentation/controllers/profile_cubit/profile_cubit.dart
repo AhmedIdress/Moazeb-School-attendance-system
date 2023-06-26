@@ -51,6 +51,7 @@ class ProfileCubit extends Cubit<ProfileState> with ChangeNotifier {
   void getData() {
     emit(ProfileInitialState());
     isParent = hive.get(AppLocalDataKeys.isParent);
+    print(isParent);
     if (isParent) {
       parent = LoginData.fromJson(hiveMap.get(AppLocalDataKeys.parent));
     } else {

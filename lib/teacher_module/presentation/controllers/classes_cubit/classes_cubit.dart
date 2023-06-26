@@ -24,7 +24,7 @@ class ClassesCubit extends Cubit<ClassesState> {
       if (kDebugMode) {
         print(children);
       }
-      getAttend();
+      await getAttend();
       emit(ClassesGetSuccessfullyState());
     } catch (e) {
       if (kDebugMode) {
@@ -34,7 +34,7 @@ class ClassesCubit extends Cubit<ClassesState> {
     }
   }
 
-  void getAttend() async {
+  Future<void> getAttend() async {
     emit(ClassesInitialState());
     for (int i = 0; i < children.data!.length; i++) {
       semiAttendanceModel = await _baseParentRepository

@@ -5,6 +5,7 @@ String image = 'assets/images/';
 class AppPath {
   static String prof2 = '${image}prof2.jpg';
   static String hima = '${image}hima.jpg';
+  static String user = '${image}profile.png';
   static String boardImage1 = '${image}board image 1.png';
   static String boardImage2 = '${image}board image 2.png';
   static String boardImage3 = '${image}board image 3.png';

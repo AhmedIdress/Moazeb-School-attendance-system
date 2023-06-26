@@ -155,6 +155,19 @@ class StudySchedule extends StatelessWidget {
                                           ),
                                           child: Column(
                                             children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: AppSize.s10h),
+                                                child: Text(
+                                                  cubit.times.period?[index]
+                                                          ?.index
+                                                          .toString() ??
+                                                      '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall,
+                                                ),
+                                              ),
                                               Text(
                                                 cubit.times.period?[index]
                                                         ?.startTime
@@ -190,10 +203,6 @@ class StudySchedule extends StatelessWidget {
                                             start: AppSize.s16w,
                                             top: AppSize.s16h,
                                           ),
-                                          padding: EdgeInsetsDirectional.only(
-                                            end: AppSize.s16w,
-                                            bottom: AppSize.s16w,
-                                          ),
                                           decoration: BoxDecoration(
                                             color: /*Colors.grey.shade300*/
                                                 AppColors.primaryBright,
@@ -205,24 +214,25 @@ class StudySchedule extends StatelessWidget {
                                           height: double.infinity,
                                           alignment:
                                               AlignmentDirectional.bottomEnd,
-                                          child: Text(
-                                            cubit.times.period?[index]?.name
-                                                        .toLowerCase() ==
-                                                    "Break".toLowerCase()
-                                                ? getLang(context, 'break')
-                                                : (cubit.dayData[cubit.times
-                                                        .period?[index]?.name
-                                                        .toLowerCase()] ??
-                                                    ''),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium
-                                                ?.copyWith(
-                                                  color:
-                                                      //AppColors.primaryBright
-                                                      Colors.white,
-                                                ),
-                                            textAlign: TextAlign.end,
+                                          child: Center(
+                                            child: Text(
+                                              cubit.times.period?[index]?.name
+                                                          .toLowerCase() ==
+                                                      "Break".toLowerCase()
+                                                  ? getLang(context, 'break')
+                                                  : (cubit.dayData[cubit.times
+                                                          .period?[index]?.name
+                                                          .toLowerCase()] ??
+                                                      ''),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall
+                                                  ?.copyWith(
+                                                    color:
+                                                        //AppColors.primaryBright
+                                                        Colors.white,
+                                                  ),
+                                            ),
                                           ),
                                         ),
                                       ),
