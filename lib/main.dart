@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +25,21 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox(AppLocalDataKeys.cacheBoxName);
   DioHelper.init();
+  AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+            channelKey: 'attendKey',
+            channelName: 'Attend notification',
+            channelDescription: 'Student notification'),
+      ],
+      channelGroups: [
+        NotificationChannelGroup(
+          channelGroupkey: 'attendGroup',
+          channelGroupName: 'Group attend',
+        )
+      ],
+      debug: true);
   runApp(const MyApp());
 }
 
@@ -141,6 +157,12 @@ class _MyAppState extends State<MyApp> {
     arabicNotifier.addListener(() {
       setState(() {});
     });
+    AwesomeNotifications().requestPermissionToSendNotifications().then((value) {
+      if (!value) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+
     super.initState();
   }
 }

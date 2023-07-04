@@ -143,6 +143,9 @@ class StudySchedule extends StatelessWidget {
                             child: ListView.builder(
                               itemCount: cubit.times.period?.length,
                               itemBuilder: (BuildContext context, int index) {
+                                if (index == 0) {
+                                  return Container();
+                                }
                                 return SizedBox(
                                   height: context.screenHeight * .2,
                                   child: Row(

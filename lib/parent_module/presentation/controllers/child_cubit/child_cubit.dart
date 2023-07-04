@@ -1,9 +1,8 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibn_khaldun/core/app_path.dart';
 import 'package:ibn_khaldun/parent_module/data/models/card_style_model.dart';
+import 'package:ibn_khaldun/parent_module/data/models/logs_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/semi_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/student_model.dart';
 import 'package:ibn_khaldun/parent_module/data/parent_repository/parent_repository.dart';
@@ -16,12 +15,10 @@ class ChildCubit extends Cubit<ChildState> {
   final BaseParentRepository _baseParentRepository = ParentRepository();
   late SemiAttendanceModel semiAttendanceModel;
   late StudentModel studentModel;
+  late List<LogModel> logs;
 
   void init(String id) {
-    /*getSemiAttendance(id);
-    getStudentData(id);*/
     getData(id);
-    //emit(ChildReInitialState());
   }
 
   void getData(String id) async {
@@ -40,15 +37,11 @@ class ChildCubit extends Cubit<ChildState> {
     }
   }
 
-  /*void getStudentData(String id) async {
-
-    if (studentModel.succeeded) {
-      //emit(GetStudentDataState());
-    } else {
-      emit(GetStudentDataFailedState(
-          '${studentModel.message}, ${studentModel.errors}'));
-    }
-  }*/
+  void getLogs(String id) async {
+    emit(LogsInitialState());
+    logs = await _baseParentRepository.getLogs(id);
+    emit(LogsState());
+  }
 
   void fill() {
     cards = [
@@ -77,11 +70,20 @@ class ChildCubit extends Cubit<ChildState> {
   }
 
   List<CardStyleModel> cards = [];
-  CardStyleModel schedule = CardStyleModel(
-    state: 'schedule',
-    backgroundColor: const Color.fromRGBO(77, 197, 145, 1),
-    maskColor: const Color.fromRGBO(0, 102, 79, 1),
-    icon: AppPath.notes,
-    days: 0,
-  );
+  List<CardStyleModel> scheduleAndLogs = [
+    CardStyleModel(
+      state: 'schedule',
+      backgroundColor: const Color.fromRGBO(77, 197, 145, 1),
+      maskColor: const Color.fromRGBO(0, 102, 79, 1),
+      icon: AppPath.notes,
+      days: 0,
+    ),
+    CardStyleModel(
+      state: 'logs',
+      backgroundColor: Colors.black.withGreen(200),
+      maskColor: Colors.black.withRed(210),
+      icon: AppPath.list,
+      days: 0,
+    ),
+  ];
 }

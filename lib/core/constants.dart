@@ -43,6 +43,8 @@ class AppEndPoint {
   static String getTeacherTable = 'Timetable/teacher/';
   static String classes = 'Classes/';
   static String students = '/students';
+  static String attendance = 'Attendance/';
+  static String logs = '/today/logs';
 }
 
 class AppLocalDataKeys {
@@ -55,4 +57,5 @@ class AppLocalDataKeys {
   static String dark = 'dark';
   static String arabic = 'arabic';
   static String first = 'first';
+  static String notify = 'notify';
 }

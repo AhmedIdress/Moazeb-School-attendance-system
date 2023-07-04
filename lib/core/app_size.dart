@@ -2,6 +2,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppSize {
   static double s2h = 2.h;
+  static double s4h = 4.h;
   static double s2w = 2.w;
   static double s10h = 10.h;
   static double s10w = 10.w;
@@ -51,11 +52,15 @@ class AppFont {
   static double f20 = 20.sp;
   static double f22 = 22.sp;
   static double f24 = 24.sp;
+  static double f44 = 44.sp;
 }
 
 class AppRadius {
+  static double r4 = 4.r;
+  static double r6 = 6.r;
   static double r10 = 10.r;
   static double r12 = 12.r;
+  static double r13 = 13.r;
   static double r14 = 14.r;
   static double r16 = 16.r;
   static double r18 = 18.r;

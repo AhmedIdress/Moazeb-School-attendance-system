@@ -7,6 +7,7 @@ import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/child_cubit/child_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/calender_screen.dart';
+import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/logs_screen.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/study_schedule.dart';
 
 class ChildScreen extends StatelessWidget {
@@ -25,8 +26,13 @@ class ChildScreen extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        if (/*state is ChildReInitialState ||*/
-            state is GetDataSuccessfullyState) {
+        if (state is ChildInitialState) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
           String lang = Localizations.localeOf(context).languageCode;
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -202,11 +208,17 @@ class ChildScreen extends StatelessWidget {
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () {
-                                      context.push(StudySchedule(
-                                        className: cubit
-                                                .studentModel.data?.className ??
-                                            '',
-                                      ));
+                                      context.push(index == 0
+                                          ? StudySchedule(
+                                              className: cubit.studentModel.data
+                                                      ?.className ??
+                                                  '',
+                                            )
+                                          : const LogsScreen());
+                                      index == 1
+                                          ? cubit.getLogs(
+                                              cubit.studentModel.data?.id ?? '')
+                                          : null;
                                     },
                                     child: SizedBox(
                                       height: 150,
@@ -217,7 +229,8 @@ class ChildScreen extends StatelessWidget {
                                             Container(
                                               decoration: BoxDecoration(
                                                 color: cubit
-                                                    .schedule.backgroundColor,
+                                                    .scheduleAndLogs[index]
+                                                    .backgroundColor,
                                               ),
                                             ),
                                             PositionedDirectional(
@@ -227,7 +240,8 @@ class ChildScreen extends StatelessWidget {
                                                   : -AppSize.s100w,
                                               child: CustomPaint(
                                                 painter: PathPainter(
-                                                  cubit.schedule.maskColor,
+                                                  cubit.scheduleAndLogs[index]
+                                                      .maskColor,
                                                 ),
                                                 size: Size(AppSize.s200w,
                                                     AppSize.s200h),
@@ -238,21 +252,34 @@ class ChildScreen extends StatelessWidget {
                                               top: AppSize.s35h,
                                               child: Column(
                                                 children: [
+                                                  cubit.scheduleAndLogs[index]
+                                                              .state ==
+                                                          'schedule'
+                                                      ? Text(
+                                                          cubit
+                                                                  .studentModel
+                                                                  .data
+                                                                  ?.className ??
+                                                              '',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleLarge
+                                                                  ?.copyWith(
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                        )
+                                                      : Container(),
                                                   Text(
-                                                    cubit.studentModel.data
-                                                            ?.className ??
-                                                        '',
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleLarge
-                                                        ?.copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    getLang(context,
-                                                        cubit.schedule.state),
+                                                    getLang(
+                                                        context,
+                                                        cubit
+                                                            .scheduleAndLogs[
+                                                                index]
+                                                            .state),
                                                     textAlign: TextAlign.center,
                                                     style: Theme.of(context)
                                                         .textTheme
@@ -268,9 +295,11 @@ class ChildScreen extends StatelessWidget {
                                               top: AppSize.s20h,
                                               end: AppSize.s25w,
                                               child: SvgPicture.asset(
-                                                cubit.schedule.icon,
+                                                cubit.scheduleAndLogs[index]
+                                                    .icon,
                                                 width: AppSize.s30w,
                                                 height: AppSize.s30h,
+                                                color: Colors.white,
                                               ),
                                             ),
                                           ],
@@ -285,7 +314,7 @@ class ChildScreen extends StatelessWidget {
                                     height: AppSize.s10h,
                                   );
                                 },
-                                itemCount: 1,
+                                itemCount: cubit.scheduleAndLogs.length,
                               ),
                             ),
                             InkWell(
@@ -344,15 +373,7 @@ class ChildScreen extends StatelessWidget {
                                 image: AssetImage(
                                   AppPath.user,
                                 ),
-                              )
-                              //todo: remove
-                              /*
-                               : DecorationImage(
-                                      image: NetworkImage(
-                                          '$imageHost${cubit.studentModel.data?.imageUrl}' ??
-                                              ''),
-                                    )*/
-                              ,
+                              ),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -427,12 +448,6 @@ class ChildScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          );
-        } else {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
             ),
           );
         }

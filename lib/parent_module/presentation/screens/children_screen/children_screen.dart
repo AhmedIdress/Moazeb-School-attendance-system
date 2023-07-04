@@ -7,6 +7,7 @@ import 'package:ibn_khaldun/core/app_size.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/children_cubit/children_cubit.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/children_screen/child_screen/child_screen.dart';
+import 'package:ibn_khaldun/parent_module/presentation/screens/notification_screen.dart';
 import 'package:ibn_khaldun/parent_module/presentation/screens/profile_screen.dart';
 
 class ChildrenScreen extends StatefulWidget {
@@ -28,7 +29,10 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
       },
       builder: (context, state) {
         String lang = Localizations.localeOf(context).languageCode;
-        if (state is GetLoginDataSuccessfullyState) {
+        if (state is ChildrenInitialState) {
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
+        } else {
           return Scaffold(
             body: Stack(
               children: [
@@ -154,24 +158,65 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                   start: Localizations.localeOf(context).languageCode == 'en'
                       ? AppSize.s20w
                       : null,
-                  top: AppSize.s60h,
+                  top: AppSize.s48h,
                   end: Localizations.localeOf(context).languageCode == 'ar'
                       ? AppSize.s20w
                       : null,
-                  child: Text(
-                    getLang(context, 'children'),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          context.push(const NotificationScreen());
+                        },
+                        child: Stack(
+                          children: [
+                            Icon(
+                              Icons.notifications,
+                              color: Colors.white,
+                              size: AppFont.f44,
+                            ),
+                            cubit.listNotify.isEmpty
+                                ? Container()
+                                : PositionedDirectional(
+                                    top: AppSize.s4h,
+                                    end: 0,
+                                    child: CircleAvatar(
+                                      radius: AppRadius.r13,
+                                      backgroundColor: AppColors.primary,
+                                      child: CircleAvatar(
+                                        radius: AppRadius.r10,
+                                        backgroundColor: Colors.redAccent,
+                                        child: Text(
+                                          cubit.listNotify.length.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ],
                         ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.only(start: AppSize.s16w),
+                        child: Text(
+                          getLang(context, 'children'),
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           );
-        } else {
-          return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
         }
       },
     );

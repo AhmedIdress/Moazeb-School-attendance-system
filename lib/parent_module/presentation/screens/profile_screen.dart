@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibn_khaldun/auth_and_onboarding_module/data/data_source/local_data_source/hive_data_source.dart';
 import 'package:ibn_khaldun/auth_and_onboarding_module/presentation/screens/auth/auth_layout.dart';
 import 'package:ibn_khaldun/core/app_colors.dart';
 import 'package:ibn_khaldun/core/app_locale.dart';
 import 'package:ibn_khaldun/core/app_size.dart';
+import 'package:ibn_khaldun/core/constants.dart';
 import 'package:ibn_khaldun/core/extensions_helper.dart';
 import 'package:ibn_khaldun/parent_module/presentation/controllers/profile_cubit/profile_cubit.dart';
+import 'package:ibn_khaldun/parent_module/presentation/screens/notification_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -62,9 +65,18 @@ class ProfileScreen extends StatelessWidget {
                         leading: const Icon(
                           Icons.notifications_active,
                         ),
-                        title: Text(
-                          getLang(context, "notification"),
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        title: InkWell(
+                          onTap: () {
+                            HiveDataSource hive = HiveDataSource<bool>(
+                                AppLocalDataKeys.cacheBoxName);
+                            hive.get(AppLocalDataKeys.isParent)
+                                ? context.push(const NotificationScreen())
+                                : null;
+                          },
+                          child: Text(
+                            getLang(context, "notification"),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
                       ),
                       ListTile(

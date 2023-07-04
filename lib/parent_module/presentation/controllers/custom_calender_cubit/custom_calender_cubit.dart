@@ -9,7 +9,6 @@ import 'package:ibn_khaldun/parent_module/presentation/controllers/custom_calend
 
 class CustomCalenderCubit extends Cubit<CustomCalendarState> {
   CustomCalenderCubit() : super(InitialCustomCalendarState());
-
   final BaseParentRepository _baseParentRepository = ParentRepository();
   late String id;
   late SemiAttendanceModel _semiAttendanceModel;
@@ -29,7 +28,6 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
     'attendDay',
     'excuseDay',
   ];
-
   DateTime currentStart = DateTime.now();
   late DateTime semiStart;
   late DateTime semiEnd;
@@ -45,7 +43,6 @@ class CustomCalenderCubit extends Cubit<CustomCalendarState> {
       dateTime.month,
       1,
     );
-
     // Subtract the number of days needed to get to the last Sunday
     if (lastDayOfMonth.weekday == 7) {
       return lastDayOfMonth;

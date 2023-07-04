@@ -64,8 +64,8 @@ class LoginData {
       this.students});
 
   LoginData.fromJson(Map<String, dynamic> json) {
-    parentId = json['parentId'];
-    parentName = json['parentName'];
+    parentId = json['id'];
+    parentName = json['name'];
     email = json['email'];
     nid = json['nid'];
     governorate = json['governorate'];
@@ -84,8 +84,8 @@ class LoginData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['parentId'] = parentId;
-    data['parentName'] = parentName;
+    data['id'] = parentId;
+    data['name'] = parentName;
     data['email'] = email;
     data['nid'] = nid;
     data['governorate'] = governorate;

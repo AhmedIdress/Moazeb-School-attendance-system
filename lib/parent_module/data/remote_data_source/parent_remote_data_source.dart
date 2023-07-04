@@ -1,5 +1,6 @@
 import 'package:ibn_khaldun/core/constants.dart';
 import 'package:ibn_khaldun/core/services/dio_helper.dart';
+import 'package:ibn_khaldun/parent_module/data/models/logs_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/month_attendance_model.dart';
 import 'package:ibn_khaldun/parent_module/data/models/period_time_mdel.dart';
 import 'package:ibn_khaldun/parent_module/data/models/semi_attendance_model.dart';
@@ -8,10 +9,18 @@ import 'package:ibn_khaldun/parent_module/data/models/student_schedule_model.dar
 
 abstract class BaseParentRemoteDataSource {
   Future<SemiAttendanceModel> getStudentAttendanceSemester(String id);
+
   Future<MonthAttendanceModel> getStudentAttendanceMonth(String id, int month);
+
   Future<StudentScheduleModel> getStudentSchedule(String className);
+
   Future<PeriodTimeModel> getSchedulePeriod();
+
   Future<StudentModel> getStudentData(String id, String token);
+
+  Future<List<LogModel>> getLogs(
+    String id,
+  );
 }
 
 class ParentRemoteDataSource extends BaseParentRemoteDataSource {
@@ -75,6 +84,26 @@ class ParentRemoteDataSource extends BaseParentRemoteDataSource {
     if (response.statusCode == 200) {
       print(response.data);
       return PeriodTimeModel.fromJson(response.data);
+    } else {
+      throw Exception('response error');
+    }
+  }
+
+  @override
+  Future<List<LogModel>> getLogs(String id) async {
+    var response = await DioHelper.getData(
+      url: AppEndPoint.attendance + id + AppEndPoint.logs,
+    );
+    if (response.statusCode == 200) {
+      print(response.data['data']);
+      List maps = response.data['data'];
+      List<LogModel> logs = [];
+      maps.forEach((element) {
+        logs.add(
+          LogModel.fromJson((element as Map<String, dynamic>)),
+        );
+      });
+      return logs;
     } else {
       throw Exception('response error');
     }

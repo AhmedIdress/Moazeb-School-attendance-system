@@ -14,6 +14,7 @@ class AuthRemoteDataSource extends BaseAuthRemoteDataSource {
   Future<LoginModel> login(String email, String password) async {
     var response = await DioHelper.postData(
         url: AppEndPoint.login, data: {"Email": email, "Password": password});
+    print(response.realUri);
     if (response.statusCode == 200) {
       var data = response.data;
       return LoginModel.fromJson(data);

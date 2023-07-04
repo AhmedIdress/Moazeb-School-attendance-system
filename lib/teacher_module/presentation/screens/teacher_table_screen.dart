@@ -319,17 +319,41 @@ class _TeacherTableScreenState extends State<TeacherTableScreen> {
                                                   alignment:
                                                       AlignmentDirectional
                                                           .center,
-                                                  child: Text(
-                                                    cubit.tablesDay[index]
-                                                        .subjectName,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .displaySmall
-                                                        ?.copyWith(
-                                                          color:
-                                                              //AppColors.primaryBright
-                                                              Colors.white,
-                                                        ),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        cubit.tablesDay[index]
+                                                            .subjectName,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .displaySmall
+                                                            ?.copyWith(
+                                                              color:
+                                                                  //AppColors.primaryBright
+                                                                  Colors.white,
+                                                            ),
+                                                      ),
+                                                      //////todo
+                                                      SizedBox(
+                                                        height: AppSize.s10h,
+                                                      ),
+                                                      Text(
+                                                        cubit.tablesDay[index]
+                                                            .subjectCode
+                                                            .split('_')
+                                                            .last,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleLarge
+                                                            ?.copyWith(
+                                                              color:
+                                                                  //AppColors.primaryBright
+                                                                  Colors.white,
+                                                            ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),

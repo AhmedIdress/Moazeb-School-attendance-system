@@ -17,4 +17,5 @@ class AppPath {
   static String subtract = '${image}subtract-color-outline-icon.svg';
   static String empty = '${image}Frame empty.svg';
   static String noWifi = '${image}no-wifi.png';
+  static String list = '${image}list-solid.svg';
 }

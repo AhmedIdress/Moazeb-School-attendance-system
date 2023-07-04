@@ -336,7 +336,7 @@ class CalenderScreen extends StatelessWidget {
                                   ),
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
                                       list[index].toString(),
@@ -350,22 +350,18 @@ class CalenderScreen extends StatelessWidget {
                                                       : null,
                                               fontSize: 70),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: AppSize.s10w),
-                                      child: Text(
-                                        getLang(context, cubit.days[index]),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall
-                                            ?.copyWith(
-                                              color:
-                                                  brightness == Brightness.light
-                                                      ? Colors.white
-                                                      : null,
-                                            ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                    Text(
+                                      getLang(context, cubit.days[index]),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                            color:
+                                                brightness == Brightness.light
+                                                    ? Colors.white
+                                                    : null,
+                                          ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
